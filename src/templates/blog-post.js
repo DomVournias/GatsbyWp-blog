@@ -1,7 +1,6 @@
-import React from "react"
-import { Link, graphql } from "gatsby"
-import { GatsbyImage } from "gatsby-plugin-image"
+import { graphql, Link } from "gatsby"
 import parse from "html-react-parser"
+import React from "react"
 
 // We're using Gutenberg so we need the block styles
 // these are copied into this project due to a conflict in the postCSS
@@ -11,62 +10,69 @@ import parse from "html-react-parser"
 import "../css/@wordpress/block-library/build-style/style.css"
 import "../css/@wordpress/block-library/build-style/theme.css"
 
-import Bio from "../components/bio"
+import BackgroundImage from "gatsby-background-image"
+import { AiFillHome } from "react-icons/ai"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 
 const BlogPostTemplate = ({ data: { previous, next, post } }) => {
   const featuredImage = {
-    data: post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData,
-    alt: post.featuredImage?.node?.alt || ``,
+    data: post?.featuredImage?.node?.localFile?.childImageSharp?.fluid,
+    alt: post?.featuredImage?.node?.alt || ``,
   }
+
+  console.log(post)
 
   return (
     <Layout>
-      <Seo title={post.title} description={post.excerpt} />
+      {!post ? (
+        <h3>No content</h3>
+      ) : (
+        <section className="blog-post-section ">
+          <Seo title={post.title} description={post.excerpt} />
+          <Link to="/" className="back-home-button">
+            <AiFillHome />
+            Back
+          </Link>
 
-      <article
-        className="blog-post"
-        itemScope
-        itemType="http://schema.org/Article"
-      >
-        <header>
-          <h1 itemProp="headline">{parse(post.title)}</h1>
+          <article
+            className="blog-post boxed"
+            itemScope
+            itemType="http://schema.org/Article"
+          >
+            <header className="blog-post-header">
+              {/* if we have a featured image for this post let's display it */}
+              {featuredImage?.data && (
+                <BackgroundImage
+                  fluid={featuredImage.data}
+                  alt={featuredImage.alt}
+                  style={{
+                    backgroundSize: "cover",
+                  }}
+                  className="blog-post-featured-image"
+                >
+                  <div className="blog-post-header-inner">
+                    <div className="blog-post-header-info glass">
+                      <h1 itemProp="headline">{parse(post.title)}</h1>
+                      <p itemProp="description">{parse(post.excerpt)}</p>
+                      <span>{post.date}</span>
+                    </div>
+                  </div>
+                </BackgroundImage>
+              )}
+            </header>
 
-          <p>{post.date}</p>
+            {!!post.content && (
+              <section itemProp="articleBody" className="blog-post-content">
+                {parse(post.content)}
+              </section>
+            )}
 
-          {/* if we have a featured image for this post let's display it */}
-          {featuredImage?.data && (
-            <GatsbyImage
-              image={featuredImage.data}
-              alt={featuredImage.alt}
-              style={{ marginBottom: 50 }}
-            />
-          )}
-        </header>
+            <hr />
+          </article>
 
-        {!!post.content && (
-          <section itemProp="articleBody">{parse(post.content)}</section>
-        )}
-
-        <hr />
-
-        <footer>
-          <Bio />
-        </footer>
-      </article>
-
-      <nav className="blog-post-nav">
-        <ul
-          style={{
-            display: `flex`,
-            flexWrap: `wrap`,
-            justifyContent: `space-between`,
-            listStyle: `none`,
-            padding: 0,
-          }}
-        >
-          <li>
+          <nav className="blog-post-nav">
+            {/* <li>
             {previous && (
               <Link to={previous.uri} rel="prev">
                 ← {parse(previous.title)}
@@ -80,9 +86,10 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
                 {parse(next.title)} →
               </Link>
             )}
-          </li>
-        </ul>
-      </nav>
+          </li> */}
+          </nav>
+        </section>
+      )}
     </Layout>
   )
 }
@@ -103,14 +110,11 @@ export const pageQuery = graphql`
       date(formatString: "MMMM DD, YYYY")
       featuredImage {
         node {
-          altText
           localFile {
             childImageSharp {
-              gatsbyImageData(
-                quality: 100
-                placeholder: TRACED_SVG
-                layout: FULL_WIDTH
-              )
+              fluid {
+                ...GatsbyImageSharpFluid_withWebp
+              }
             }
           }
         }
