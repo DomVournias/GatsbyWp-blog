@@ -4,7 +4,7 @@ import React from "react"
 
 const PostCard = props => {
   return (
-    <li key={props.key} className="post-card boxed">
+    <li className="post-card boxed">
       <Link to={props.url}>
         <article
           itemScope

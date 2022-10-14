@@ -1,12 +1,6 @@
 import { graphql, Link } from "gatsby"
 import parse from "html-react-parser"
 import React from "react"
-
-// We're using Gutenberg so we need the block styles
-// these are copied into this project due to a conflict in the postCSS
-// version used by the Gatsby and @wordpress packages that causes build
-// failures.
-// @todo update this once @wordpress upgrades their postcss version
 import "../css/@wordpress/block-library/build-style/style.css"
 import "../css/@wordpress/block-library/build-style/theme.css"
 
@@ -15,7 +9,7 @@ import { AiFillHome } from "react-icons/ai"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 
-const BlogPostTemplate = ({ data: { previous, next, post } }) => {
+const BlogPostTemplate = ({ data: { post } }) => {
   const featuredImage = {
     data: post?.featuredImage?.node?.localFile?.childImageSharp?.fluid,
     alt: post?.featuredImage?.node?.alt || ``,
