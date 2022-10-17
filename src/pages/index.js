@@ -1,10 +1,7 @@
 import React from "react"
-import { StateContext } from "../../context/StateContext"
-import Cart from "../components/cart"
-import CartButton from "../components/cart-button"
 import Layout from "../components/layout"
-import Posts_Archive from "../components/posts-archive"
-import Products_Archive from "../components/products-archive"
+import PostsArchive from "../components/posts-archive"
+import ProductsArchive from "../components/products-archive"
 
 export default function Home() {
   return (
@@ -15,8 +12,8 @@ export default function Home() {
         </h1>
         <hr />
       </header>
-      <Products_Archive />
-      <Posts_Archive />
+      <ProductsArchive />
+      <PostsArchive />
     </Layout>
   )
 }

@@ -8,20 +8,22 @@ import Layout from "../components/layout"
 const ProductTemplate = ({ data: { item } }) => {
   const [slideImage, setSlideImage] = useState(0)
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const { onAdd, qty, setShowCart } = useStateContext()
+  const { onAdd, qty } = useStateContext()
   const [product, setProduct] = useState(item)
 
   useEffect(() => {
-    // Replacing the default price from comma to dot
-    let removeComa = product.price.replace(",", ".")
-    // Parsing the number from String to Number
-    let parsedPrice = parseFloat(removeComa)
-    // Updating the queried project with the Parsed Price
-    setProduct({
-      ...product,
-      price: parsedPrice,
-    })
-  }, [item])
+    if (product.price) {
+      // Replacing the default price from comma to dot
+      let removeComa = product.price.toString().replace(",", ".")
+      // Parsing the number from String to Number
+      let parsedPrice = parseFloat(removeComa)
+      // Updating the queried project with the Parsed Price
+      setProduct({
+        ...product,
+        price: parsedPrice,
+      })
+    }
+  }, [item, product])
 
   const galleryImages = product.galleryImages.nodes
 
@@ -29,6 +31,8 @@ const ProductTemplate = ({ data: { item } }) => {
     setSlideImage(i)
     setSelectedIndex(i)
   }
+
+  const handleBuyButton = e => {}
 
   // const handleAddToCart = () => {
   //   onAdd(product, qty)
@@ -61,7 +65,6 @@ const ProductTemplate = ({ data: { item } }) => {
                 return (
                   <li
                     key={i}
-                    onClick={() => selectImage(i)}
                     slide={i}
                     className={
                       i === selectedIndex
@@ -69,14 +72,16 @@ const ProductTemplate = ({ data: { item } }) => {
                         : "gallery-image-pt-not-selected"
                     }
                   >
-                    <GatsbyImage
-                      image={image}
-                      key={i}
-                      alt={`slide-image-${i}`}
-                      layout={"fullWidth"}
-                      placeholder={"blurred"}
-                      formats={["auto", "webp"]}
-                    />
+                    <button onClick={() => selectImage(i)} slide={i}>
+                      <GatsbyImage
+                        image={image}
+                        key={i}
+                        alt={`slide-image-${i}`}
+                        layout={"fullWidth"}
+                        placeholder={"blurred"}
+                        formats={["auto", "webp"]}
+                      />
+                    </button>
                   </li>
                 )
               })}
@@ -95,7 +100,9 @@ const ProductTemplate = ({ data: { item } }) => {
               >
                 Add to cart
               </button>
-              <button className="button dark-button">Buy now</button>
+              <button className="button dark-button" onClick={handleBuyButton}>
+                Buy now
+              </button>
             </div>
           </section>
         </div>

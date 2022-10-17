@@ -30,7 +30,7 @@ const ProductCard = props => {
           {" "}
           <Link to={props.url} id="price">
             <span>from</span>
-            <font>{props.price}</font>
+            <font>${props.price}</font>
           </Link>
         </div>
       </div>

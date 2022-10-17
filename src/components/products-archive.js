@@ -3,7 +3,7 @@ import parse from "html-react-parser"
 import React from "react"
 import ProductCard from "./product-card"
 
-const Products_Archive = () => {
+const ProductsArchive = () => {
   const data = useStaticQuery(graphql`
     query ProductArchive {
       allWpProduct {
@@ -57,4 +57,4 @@ const Products_Archive = () => {
   )
 }
 
-export default Products_Archive
+export default ProductsArchive

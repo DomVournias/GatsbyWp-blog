@@ -13,9 +13,6 @@ const Cart = () => {
     totalQuantities,
     totalPrice,
     cartItems,
-    qty,
-    incQty,
-    decQty,
     toggleCartItemQuantity,
   } = useStateContext()
 
@@ -68,7 +65,6 @@ const Cart = () => {
                     <div className="cart-item-info">
                       <div>
                         <h3 className="item-name line-clamp">{item.name}</h3>
-                        {/* <p id="item-description">Item description</p> */}
                       </div>
 
                       <div className="cart-item-quantity">

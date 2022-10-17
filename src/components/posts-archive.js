@@ -4,7 +4,7 @@ import React from "react"
 
 import PostCard from "./post-card"
 
-const Posts_Archive = () => {
+const PostsArchive = () => {
   const data = useStaticQuery(graphql`
     query WordPressPostArchive {
       allWpPost {
@@ -72,4 +72,4 @@ const Posts_Archive = () => {
   )
 }
 
-export default Posts_Archive
+export default PostsArchive
